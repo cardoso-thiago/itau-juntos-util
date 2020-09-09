@@ -1,5 +1,7 @@
 package br.com.itau.util.handler;
 
+import br.com.itau.util.exception.ItauSystemException;
+import br.com.itau.util.exception.NotFoundException;
 import br.com.itau.util.model.ErrorResponse;
 import br.com.itau.util.model.builder.ErrorResponseBuilder;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -27,10 +29,11 @@ import java.util.stream.Collectors;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-//    @ExceptionHandler(value = {CardSystemException.class})
-//    protected ResponseEntity<Object> handleCardSystemException(CardSystemException e) {
-//        return ResponseEntity.status(e.getHttpStatus()).body(createErrorBody(e.getMessage()));
-//    }
+
+    @ExceptionHandler(value = {ItauSystemException.class})
+    protected ResponseEntity<Object> handleSystemException(ItauSystemException e) {
+        return ResponseEntity.status(e.getStatusCode()).body(createErrorBody(e.getLocalizedMessage()));
+    }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
     protected ResponseEntity<Object> handleConstraintViolationException(ConstraintViolationException e) {
